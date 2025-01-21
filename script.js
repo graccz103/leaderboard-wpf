@@ -18,17 +18,22 @@ function loadLeaderboard() {
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const username = document.getElementById('username').value;
-    const score = parseInt(document.getElementById('score').value, 10);
+    const score = document.getElementById('score').value; // Bez parseInt, ponieważ score to czas
 
-    if (!username || isNaN(score)) return alert('Proszę wypełnić wszystkie pola.');
+    if (!username || !score) {
+        alert('Proszę wypełnić wszystkie pola.');
+        return;
+    }
 
     const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
     leaderboard.push({ username, score });
     localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
     loadLeaderboard();
 
-    // Ukryj przycisk po dodaniu wyniku
-    submitButton.style.display = 'none';
+    // Ukryj przycisk Submit
+    submitButton.disabled = true;
+    submitButton.style.cursor = 'not-allowed';
+    submitButton.style.opacity = '0.5';
 });
 
 // Ładowanie wyników przy starcie
