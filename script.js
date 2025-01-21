@@ -1,6 +1,5 @@
 const form = document.getElementById('submit-score-form');
 const leaderboardTable = document.getElementById('leaderboard').querySelector('tbody');
-const submitButton = form.querySelector('button'); // Pobierz przycisk Submit
 
 // Funkcja do pobierania wyników z localStorage
 function loadLeaderboard() {
@@ -14,27 +13,34 @@ function loadLeaderboard() {
     });
 }
 
+// Funkcja do odczytu parametrów URL i wypełnienia formularza
+function populateFormFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+    const score = urlParams.get('score');
+
+    if (username) {
+        document.getElementById('username').value = username;
+    }
+    if (score) {
+        document.getElementById('score').value = score;
+    }
+}
+
 // Obsługa przesyłania wyników
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const username = document.getElementById('username').value;
-    const score = document.getElementById('score').value; // Bez parseInt, ponieważ score to czas
+    const score = document.getElementById('score').value;
 
-    if (!username || !score) {
-        alert('Proszę wypełnić wszystkie pola.');
-        return;
-    }
+    if (!username || !score) return alert('Proszę wypełnić wszystkie pola.');
 
     const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
     leaderboard.push({ username, score });
     localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
     loadLeaderboard();
-
-    // Ukryj przycisk Submit
-    submitButton.disabled = true;
-    submitButton.style.cursor = 'not-allowed';
-    submitButton.style.opacity = '0.5';
 });
 
-// Ładowanie wyników przy starcie
-loadLeaderboard();
+// Inicjalizacja
+populateFormFromUrl(); // Wywołanie funkcji odczytującej parametry URL
+loadLeaderboard();     // Ładowanie leaderboardu
