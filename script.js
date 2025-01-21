@@ -19,13 +19,21 @@ function populateFormFromUrl() {
     const username = urlParams.get('username');
     const score = urlParams.get('score');
 
+    console.log('URL Params:', { username, score }); // Debugging
+
     if (username) {
         document.getElementById('username').value = username;
+    } else {
+        console.log("Username not found in URL.");
     }
+
     if (score) {
         document.getElementById('score').value = score;
+    } else {
+        console.log("Score not found in URL.");
     }
 }
+
 
 // Obsługa przesyłania wyników
 form.addEventListener('submit', (e) => {
