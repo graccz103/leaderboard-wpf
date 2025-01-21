@@ -19,8 +19,12 @@ function populateFormFromUrl() {
     const username = urlParams.get('username');
     const score = urlParams.get('score');
 
-    if (username) document.getElementById('username').value = username;
-    if (score) document.getElementById('score').value = score;
+    if (username) {
+        document.getElementById('username').value = username;
+    }
+    if (score) {
+        document.getElementById('score').value = score;
+    }
 }
 
 // Obsługa przesyłania wyników
@@ -38,5 +42,5 @@ form.addEventListener('submit', (e) => {
 });
 
 // Inicjalizacja
-populateFormFromUrl();
-loadLeaderboard();
+populateFormFromUrl(); // Wywołanie funkcji odczytującej parametry URL
+loadLeaderboard();     // Ładowanie leaderboardu
