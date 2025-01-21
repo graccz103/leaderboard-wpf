@@ -13,13 +13,25 @@ function loadLeaderboard() {
     });
 }
 
+// Obsługa parametrów URL
+function handleUrlParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const username = urlParams.get('username');
+    const score = urlParams.get('score');
+
+    if (username && score) {
+        document.getElementById('username').value = username;
+        document.getElementById('score').value = score;
+    }
+}
+
 // Obsługa przesyłania wyników
 form.addEventListener('submit', (e) => {
     e.preventDefault();
     const username = document.getElementById('username').value;
-    const score = parseInt(document.getElementById('score').value, 10);
+    const score = document.getElementById('score').value;
 
-    if (!username || isNaN(score)) return alert('Proszę wypełnić wszystkie pola.');
+    if (!username || !score) return alert('Proszę wypełnić wszystkie pola.');
 
     const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
     leaderboard.push({ username, score });
@@ -27,5 +39,6 @@ form.addEventListener('submit', (e) => {
     loadLeaderboard();
 });
 
-// Ładowanie wyników przy starcie
+// Inicjalizacja
+handleUrlParameters();
 loadLeaderboard();
