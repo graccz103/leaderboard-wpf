@@ -13,16 +13,14 @@ function loadLeaderboard() {
     });
 }
 
-// Obsługa parametrów URL
-function handleUrlParameters() {
+// Funkcja do odczytu parametrów URL i wypełnienia formularza
+function populateFormFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
     const username = urlParams.get('username');
     const score = urlParams.get('score');
 
-    if (username && score) {
-        document.getElementById('username').value = username;
-        document.getElementById('score').value = score;
-    }
+    if (username) document.getElementById('username').value = username;
+    if (score) document.getElementById('score').value = score;
 }
 
 // Obsługa przesyłania wyników
@@ -40,5 +38,5 @@ form.addEventListener('submit', (e) => {
 });
 
 // Inicjalizacja
-handleUrlParameters();
+populateFormFromUrl();
 loadLeaderboard();
