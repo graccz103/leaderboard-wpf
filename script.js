@@ -1,10 +1,23 @@
 const form = document.getElementById('submit-score-form');
 const leaderboardTable = document.getElementById('leaderboard').querySelector('tbody');
 
+// Funkcja do zamiany czasu z formatu mm:ss na liczbę sekund
+function timeToSeconds(time) {
+    const [minutes, seconds] = time.split(':').map(Number);
+    return minutes * 60 + seconds;
+}
+
+// Funkcja do zamiany czasu z liczby sekund na format mm:ss
+function secondsToTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+}
+
 // Funkcja do pobierania wyników z localStorage
 function loadLeaderboard() {
     const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
-    leaderboard.sort((a, b) => b.score - a.score); // Sortuj malejąco po wyniku
+    leaderboard.sort((a, b) => timeToSeconds(a.score) - timeToSeconds(b.score)); // Sortuj rosnąco po wyniku (czas)
     leaderboardTable.innerHTML = '';
     leaderboard.forEach((entry, index) => {
         const row = document.createElement('tr');
@@ -33,7 +46,6 @@ function populateFormFromUrl() {
         console.log("Score not found in URL.");
     }
 }
-
 
 // Obsługa przesyłania wyników
 form.addEventListener('submit', (e) => {
