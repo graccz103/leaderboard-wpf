@@ -4,11 +4,7 @@ const leaderboardTable = document.getElementById('leaderboard').querySelector('t
 // Funkcja do zamiany czasu z formatu mm:ss na liczbę sekund
 function timeToSeconds(time) {
     const [minutes, seconds] = time.split(':').map(Number);
-    if (isNaN(minutes) || isNaN(seconds)) {
-        console.error(`Invalid time format: ${time}`);
-        return Infinity; // Jeśli format jest błędny, ustaw największą wartość
-    }
-    return minutes * 60 + seconds;
+    return (minutes * 60) + seconds;
 }
 
 // Funkcja do zamiany czasu z liczby sekund na format mm:ss
@@ -18,12 +14,12 @@ function secondsToTime(seconds) {
     return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
+
 // Funkcja do pobierania wyników z localStorage
 function loadLeaderboard() {
     const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
-    console.log('Leaderboard before sorting:', leaderboard); // Debugging
     leaderboard.sort((a, b) => timeToSeconds(a.score) - timeToSeconds(b.score)); // Sortuj rosnąco po wyniku (czas)
-    console.log('Leaderboard after sorting:', leaderboard); // Debugging
+    
     leaderboardTable.innerHTML = '';
     leaderboard.forEach((entry, index) => {
         const row = document.createElement('tr');
@@ -31,6 +27,7 @@ function loadLeaderboard() {
         leaderboardTable.appendChild(row);
     });
 }
+
 
 // Funkcja do odczytu parametrów URL i wypełnienia formularza
 function populateFormFromUrl() {
@@ -64,11 +61,7 @@ form.addEventListener('submit', (e) => {
     const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
     leaderboard.push({ username, score });
     localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
-    console.log('New leaderboard data:', leaderboard); // Debugging
     loadLeaderboard();
-
-    // Po wysłaniu ukryj przycisk
-    e.target.querySelector('button[type="submit"]').style.display = 'none';
 });
 
 // Inicjalizacja
